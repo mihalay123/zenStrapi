@@ -1,38 +1,38 @@
-import Head from 'next/head'
-import React, { useEffect, useContext, useState } from 'react'
-import MyContext from '../lib/context'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { logout } from '../lib/auth'
-import { get, deleteAlias } from '../lib/shortener'
+import Head from "next/head";
+import React, { useEffect, useContext, useState } from "react";
+import MyContext from "../lib/context";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { logout } from "../lib/auth";
+import { get, deleteAlias } from "../lib/shortener";
 
 export default function Dashboard() {
-  const { isLoggedIn, setUser, user, setUrls, urls } = useContext(MyContext)
-  const router = useRouter()
+  const { isLoggedIn, setUser, user, setUrls, urls } = useContext(MyContext);
+  const router = useRouter();
   const getAll = async () => {
-    let short = await get()
-    if (!short) return
-    setUrls(short?.data?.attributes?.results || null)
-  }
+    let short = await get();
+    if (!short) return;
+    setUrls(short?.data?.attributes?.results || null);
+  };
   const deleteShort = async (id) => {
-    if (!id) return
-    let deleted = await deleteAlias(id)
+    if (!id) return;
+    let deleted = await deleteAlias(id);
     if (deleted.data && !deleted.error) {
-      await getAll()
+      await getAll();
     }
-  }
+  };
   useEffect(() => {
     if (!isLoggedIn) {
-      return router.push('/login')
+      return router.push("/login");
     }
-    getAll()
-  }, [urls.length])
+    getAll();
+  }, [urls?.length]);
 
   const signOut = () => {
-    logout()
-    setUser(null)
-    router.push('/login')
-  }
+    logout();
+    setUser(null);
+    router.push("/login");
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
@@ -51,7 +51,7 @@ export default function Dashboard() {
       </header>
       <main className="mt-0 flex w-full flex-1 flex-col items-center px-8 text-center">
         <p className="flex w-full flex-wrap text-lg font-bold">
-          Welcome {user?.username || ''}
+          Welcome {user?.username || ""}
         </p>
         <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
           <div className="w-full  overflow-hidden border-b  border-gray-200 shadow sm:rounded-lg">
@@ -99,22 +99,22 @@ export default function Dashboard() {
                         className="cursor-pointer whitespace-nowrap px-2 py-4"
                         title="Open Url"
                         onClick={() => {
-                          window.open(`${short.url}`, 'blank')
+                          window.open(`${short.url}`, "blank");
                         }}
                       >
                         <div className="text-sm text-gray-900">
-                          {short?.url || 'N/A'}
+                          {short?.url || "N/A"}
                         </div>
                       </td>
                       <td
                         className="cursor-pointer whitespace-nowrap px-2 py-4"
                         title="Test Alias"
                         onClick={() => {
-                          window.open(`/${short.alias}`, 'blank')
+                          window.open(`/${short.alias}`, "blank");
                         }}
                       >
                         <div className="text-sm text-gray-900">
-                          {short?.alias || 'N/A'}
+                          {short?.alias || "N/A"}
                         </div>
                       </td>
                       <td className="cursor-pointer whitespace-nowrap px-2 py-4">
@@ -141,10 +141,10 @@ export default function Dashboard() {
       </main>
       <Link href="/addUrl">
         <button className="absolute right-0 bottom-0 m-4 h-12 w-12 rounded-full bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-400">
-          {' '}
-          +{' '}
+          {" "}
+          +{" "}
         </button>
       </Link>
     </div>
-  )
+  );
 }

@@ -1,71 +1,72 @@
-import Cookie from 'js-cookie'
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337'
+import Cookie from "js-cookie";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
 
 export const get = async () => {
-  const token = Cookie.get('jwt')
+  const token = Cookie.get("jwt");
+  console.log(token);
   try {
     let response = await fetch(`${API_URL}/api/shortners`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
-    response = await response.json()
-    return response
+    });
+    response = await response.json();
+    return response;
   } catch (e) {
-    return { error: 'An error occured' }
+    return { error: "An error occured" };
   }
-}
+};
 
 export const getSingle = async (alias) => {
   try {
     let response = await fetch(`${API_URL}/api/shortners?alias=${alias}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    })
-    response = await response.json()
-    return response
+    });
+    response = await response.json();
+    return response;
   } catch (e) {
-    return { error: 'An error occured' }
+    return { error: "An error occured" };
   }
-}
+};
 
 export const create = async (url, alias) => {
-  const token = Cookie.get('jwt')
+  const token = Cookie.get("jwt");
   try {
     let response = await fetch(`${API_URL}/api/shortners`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ data: { url, alias } }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
-    response = await response.json()
-    return response
+    });
+    response = await response.json();
+    return response;
   } catch (e) {
-    return { error: 'An error occured' }
+    return { error: "An error occured" };
   }
-}
+};
 
 export const deleteAlias = async (id) => {
-  const token = Cookie.get('jwt')
+  const token = Cookie.get("jwt");
 
   try {
     let response = await fetch(`${API_URL}/api/shortners/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
 
-    response = await response.json()
-    return response
+    response = await response.json();
+    return response;
   } catch (e) {
-    return { error: 'An error occured' }
+    return { error: "An error occured" };
   }
-}
+};
